@@ -19,8 +19,8 @@ type DraftLists = {
 };
 
 export function PathInputForm({ onStart, loading }: Props) {
-  const [profile, setProfile] = useState<UserProfile>(demoProfile);
-  const [drafts, setDrafts] = useState<DraftLists>(makeDrafts(demoProfile));
+  const [profile, setProfile] = useState<UserProfile>(emptyProfile());
+  const [drafts, setDrafts] = useState<DraftLists>(makeDrafts(emptyProfile()));
 
   const setList = (key: keyof DraftLists, value: string) => {
     setDrafts((current) => ({ ...current, [key]: value }));
@@ -52,7 +52,7 @@ export function PathInputForm({ onStart, loading }: Props) {
             <BrandMark />
             <div>
               <p className="mb-2 text-xs uppercase tracking-[0.28em] text-[#d8b38e]">UofT opportunity mapping</p>
-              <h1 className="text-3xl font-semibold tracking-tight text-[#f7ead8]">Build your pathway one opportunity bubble at a time.</h1>
+              <h1 className="text-3xl font-semibold tracking-tight text-[#f7ead8]">Build your pathway, one opportunity at a time.</h1>
               <p className="mt-3 max-w-3xl text-sm leading-6 text-[#ecdcca]">
                 Start with your campus context, interests, and goals. We&apos;ll turn them into a compact branching map of UofT-relevant labs,
                 courses, student communities, work-study leads, and startup pathways.
@@ -146,6 +146,9 @@ function SelectField({
         onChange={(event) => onChange(event.target.value)}
         className="w-full rounded-2xl border border-[#e8d7c2]/24 bg-[rgba(248,235,219,0.12)] px-4 py-3 text-sm text-[#f7ead8] outline-none transition focus:border-[#d7a07e] focus:bg-[rgba(248,235,219,0.18)]"
       >
+        <option value="" className="bg-[#4b2c42] text-[#cdb8a2]">
+          Select campus
+        </option>
         {options.map((option) => (
           <option key={option} value={option} className="bg-[#4b2c42] text-[#f7ead8]">
             {option}
@@ -165,5 +168,20 @@ function makeDrafts(profile: UserProfile): DraftLists {
     desired_skills: profile.desired_skills.join(", "),
     target_industries: profile.target_industries.join(", "),
     preferred_opportunity_types: profile.preferred_opportunity_types.join(", "),
+  };
+}
+
+function emptyProfile(): UserProfile {
+  return {
+    campus: "",
+    program: "",
+    year: "",
+    skills: [],
+    interests: [],
+    desired_careers: [],
+    desired_opportunities: [],
+    desired_skills: [],
+    target_industries: [],
+    preferred_opportunity_types: [],
   };
 }
