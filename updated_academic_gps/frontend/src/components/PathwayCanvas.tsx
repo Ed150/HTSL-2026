@@ -117,7 +117,7 @@ export function PathwayCanvas({
       onPointerLeave={stopDrag}
       onWheel={handleWheel}
     >
-      <div className="pointer-events-none absolute inset-0 bg-aurora opacity-70" />
+      <div className="pointer-events-none absolute inset-0 bg-ficus-gradient opacity-70" />
 
       <motion.div
         className="absolute left-1/2 top-1/2 h-[2400px] w-[2400px]"
@@ -269,19 +269,19 @@ function getBubbleState({
 }) {
   if (active) {
     return {
-      className: "border-sky-300/65 bg-gradient-to-br from-sky-400/36 via-indigo-400/22 to-fuchsia-400/24",
+      className: "border-ficus-coral/65 bg-gradient-to-br from-ficus-coral/36 via-ficus-plum/22 to-ficus-lilac/24",
       duration: 3.4,
       coreDuration: 3.1,
       ringDuration: 4.2,
       haloDuration: 4.7,
-      haloBackground: "radial-gradient(circle, rgba(86,165,255,0.46), rgba(123,97,255,0.18), transparent 72%)",
-      coreBackground: "radial-gradient(circle, rgba(255,255,255,0.18), rgba(117,165,255,0.16), transparent 74%)",
-      ringColor: "rgba(191,219,254,0.28)",
+      haloBackground: "radial-gradient(circle, rgba(217,139,130,0.46), rgba(75,44,66,0.18), transparent 72%)",
+      coreBackground: "radial-gradient(circle, rgba(245,232,211,0.18), rgba(217,139,130,0.16), transparent 74%)",
+      ringColor: "rgba(245,232,211,0.28)",
       shell: {
         boxShadow: [
-          "0 0 0 1px rgba(125,211,252,0.34), 0 0 44px rgba(94,164,255,0.26)",
-          "0 0 0 1px rgba(125,211,252,0.46), 0 0 84px rgba(94,164,255,0.42)",
-          "0 0 0 1px rgba(125,211,252,0.34), 0 0 44px rgba(94,164,255,0.26)",
+          "0 0 0 1px rgba(217,139,130,0.34), 0 0 44px rgba(217,139,130,0.26)",
+          "0 0 0 1px rgba(217,139,130,0.46), 0 0 84px rgba(217,139,130,0.42)",
+          "0 0 0 1px rgba(217,139,130,0.34), 0 0 44px rgba(217,139,130,0.26)",
         ],
         opacity: [0.985, 1, 0.985],
       },
@@ -303,20 +303,20 @@ function getBubbleState({
   if (hovered) {
     return {
       className: childOption
-        ? "border-fuchsia-300/42 bg-gradient-to-br from-white/[0.18] to-white/[0.10]"
-        : "border-slate-100/24 bg-slate-100/[0.12]",
+        ? "border-ficus-lilac/42 bg-gradient-to-br from-ficus-cream/[0.18] to-ficus-cream/[0.10]"
+        : "border-ficus-cream/24 bg-ficus-cream/[0.12]",
       duration: 3.8,
       coreDuration: 3.8,
       ringDuration: 4.8,
       haloDuration: 5.2,
-      haloBackground: "radial-gradient(circle, rgba(173,139,255,0.32), rgba(110,176,255,0.14), transparent 72%)",
-      coreBackground: "radial-gradient(circle, rgba(255,255,255,0.16), rgba(173,139,255,0.12), transparent 72%)",
-      ringColor: "rgba(255,255,255,0.18)",
+      haloBackground: "radial-gradient(circle, rgba(200,168,200,0.32), rgba(45,67,48,0.14), transparent 72%)",
+      coreBackground: "radial-gradient(circle, rgba(245,232,211,0.16), rgba(200,168,200,0.12), transparent 72%)",
+      ringColor: "rgba(245,232,211,0.18)",
       shell: {
         boxShadow: [
-          "0 0 0 1px rgba(255,255,255,0.16), 0 0 36px rgba(133,123,255,0.22)",
-          "0 0 0 1px rgba(255,255,255,0.24), 0 0 56px rgba(133,123,255,0.34)",
-          "0 0 0 1px rgba(255,255,255,0.16), 0 0 36px rgba(133,123,255,0.22)",
+          "0 0 0 1px rgba(245,232,211,0.16), 0 0 36px rgba(200,168,200,0.22)",
+          "0 0 0 1px rgba(245,232,211,0.24), 0 0 56px rgba(200,168,200,0.34)",
+          "0 0 0 1px rgba(245,232,211,0.16), 0 0 36px rgba(200,168,200,0.22)",
         ],
         opacity: [0.99, 1, 0.99],
       },
@@ -337,19 +337,19 @@ function getBubbleState({
 
   if (visited) {
     return {
-      className: "border-slate-100/18 bg-slate-100/[0.10]",
+      className: "border-ficus-cream/18 bg-ficus-cream/[0.10]",
       duration: 5.6,
       coreDuration: 5.4,
       ringDuration: 6.2,
       haloDuration: 6.8,
-      haloBackground: "radial-gradient(circle, rgba(103,143,255,0.14), rgba(255,255,255,0.05), transparent 76%)",
-      coreBackground: "radial-gradient(circle, rgba(255,255,255,0.10), rgba(164,173,255,0.06), transparent 75%)",
-      ringColor: "rgba(255,255,255,0.10)",
+      haloBackground: "radial-gradient(circle, rgba(45,67,48,0.14), rgba(245,232,211,0.05), transparent 76%)",
+      coreBackground: "radial-gradient(circle, rgba(245,232,211,0.10), rgba(200,168,200,0.06), transparent 75%)",
+      ringColor: "rgba(245,232,211,0.10)",
       shell: {
         boxShadow: [
-          "0 0 0 1px rgba(255,255,255,0.12), 0 14px 32px rgba(15,23,42,0.38)",
-          "0 0 0 1px rgba(255,255,255,0.18), 0 20px 42px rgba(15,23,42,0.42)",
-          "0 0 0 1px rgba(255,255,255,0.12), 0 14px 32px rgba(15,23,42,0.38)",
+          "0 0 0 1px rgba(245,232,211,0.12), 0 14px 32px rgba(45,67,48,0.38)",
+          "0 0 0 1px rgba(245,232,211,0.18), 0 20px 42px rgba(45,67,48,0.42)",
+          "0 0 0 1px rgba(245,232,211,0.12), 0 14px 32px rgba(45,67,48,0.38)",
         ],
         opacity: [0.985, 1, 0.985],
       },
@@ -369,19 +369,19 @@ function getBubbleState({
   }
 
   return {
-    className: "border-fuchsia-300/28 bg-gradient-to-br from-white/[0.14] to-white/[0.08]",
+    className: "border-ficus-coral/28 bg-gradient-to-br from-ficus-cream/[0.14] to-ficus-cream/[0.08]",
     duration: 5.2,
     coreDuration: 4.9,
     ringDuration: 5.8,
     haloDuration: 6,
-    haloBackground: "radial-gradient(circle, rgba(255,255,255,0.14), rgba(133,123,255,0.08), transparent 76%)",
-    coreBackground: "radial-gradient(circle, rgba(255,255,255,0.12), rgba(163,139,255,0.08), transparent 76%)",
-    ringColor: "rgba(255,255,255,0.09)",
+    haloBackground: "radial-gradient(circle, rgba(245,232,211,0.14), rgba(200,168,200,0.08), transparent 76%)",
+    coreBackground: "radial-gradient(circle, rgba(245,232,211,0.12), rgba(217,139,130,0.08), transparent 76%)",
+    ringColor: "rgba(245,232,211,0.09)",
     shell: {
       boxShadow: [
-        "0 0 0 1px rgba(255,255,255,0.13), 0 16px 36px rgba(15,23,42,0.4)",
-        "0 0 0 1px rgba(255,255,255,0.18), 0 22px 46px rgba(15,23,42,0.44)",
-        "0 0 0 1px rgba(255,255,255,0.13), 0 16px 36px rgba(15,23,42,0.4)",
+        "0 0 0 1px rgba(245,232,211,0.13), 0 16px 36px rgba(45,67,48,0.4)",
+        "0 0 0 1px rgba(245,232,211,0.18), 0 22px 46px rgba(45,67,48,0.44)",
+        "0 0 0 1px rgba(245,232,211,0.13), 0 16px 36px rgba(45,67,48,0.4)",
       ],
       opacity: [0.985, 1, 0.985],
     },

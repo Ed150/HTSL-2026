@@ -112,12 +112,12 @@ export function App() {
                 canSummarize={activePath.summary_ready}
               />
             </div>
-            <div className="mb-3 flex items-center justify-between gap-3 rounded-[22px] border border-white/10 bg-white/[0.06] px-4 py-3">
+            <div className="mb-3 flex items-center justify-between gap-3 rounded-[22px] border border-ficus-cream/10 bg-ficus-forest/20 px-4 py-3">
               <div>
-                <div className="text-[11px] uppercase tracking-[0.28em] text-slate-400">Guide</div>
-                <div className="mt-1 text-sm text-slate-100">{assistantPrompt}</div>
+                <div className="text-[11px] uppercase tracking-[0.28em] text-ficus-lilac">Guide</div>
+                <div className="mt-1 text-sm text-ficus-cream">{assistantPrompt}</div>
               </div>
-              <div className="text-right text-xs text-slate-300/80">
+              <div className="text-right text-xs text-ficus-lilac/80">
                 <div>Single-click for details</div>
                 <div>Double-click to continue the path</div>
               </div>

@@ -47,20 +47,27 @@ export function PathInputForm({ onStart, loading }: Props) {
     <div className="flex h-full items-center justify-center px-6 py-8">
       <form onSubmit={handleSubmit} className="glass w-full max-w-5xl rounded-[28px] p-6 shadow-glow">
         <div className="mb-6 flex items-end justify-between gap-4">
-          <div>
-            <p className="mb-2 text-xs uppercase tracking-[0.28em] text-sky-300/80">Academic GPS for UofT</p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">Build a UofT pathway one opportunity bubble at a time.</h1>
-            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
-              Start with your campus context, interests, and goals. We&apos;ll turn them into a compact branching map of UofT-relevant labs,
-              courses, student communities, work-study leads, and startup pathways.
-            </p>
+          <div className="flex items-start gap-6">
+            <img 
+              src="/648223734_1219376380348981_176398887528869947_n.png" 
+              alt="Ficus Logo" 
+              className="h-24 w-auto rounded-xl object-contain"
+            />
+            <div>
+              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ficus-coral">Academic Discovery at UofT</p>
+              <h1 className="text-3xl font-semibold tracking-tight text-ficus-cream">Build your Ficus pathway one opportunity bubble at a time.</h1>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-ficus-cream/80">
+                Start with your campus context, interests, and goals. We&apos;ll turn them into a compact branching map of UofT-relevant labs,
+                courses, student communities, work-study leads, and startup pathways.
+              </p>
+            </div>
           </div>
           <button
             type="button"
             onClick={loadDemo}
-            className="rounded-full border border-white/12 bg-white/[0.08] px-4 py-2 text-sm text-slate-100 transition hover:bg-white/[0.12]"
+            className="rounded-full border border-ficus-cream/12 bg-ficus-cream/[0.08] px-4 py-2 text-sm text-ficus-cream transition hover:bg-ficus-cream/[0.12]"
           >
-            Load UofT demo
+            Load Ficus demo
           </button>
         </div>
 
@@ -83,15 +90,15 @@ export function PathInputForm({ onStart, loading }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-ficus-cream/60">
             Personalized around UofT opportunities with safe public-data ingestion and local demo fallback.
           </p>
           <button
             type="submit"
             disabled={loading}
-            className="rounded-full bg-gradient-to-r from-sky-400 via-indigo-400 to-fuchsia-400 px-5 py-2.5 text-sm font-medium text-slate-950 transition hover:scale-[1.01] disabled:opacity-60"
+            className="rounded-full bg-gradient-to-r from-ficus-coral via-ficus-lilac to-ficus-plum px-5 py-2.5 text-sm font-medium text-ficus-cream transition hover:scale-[1.01] disabled:opacity-60 shadow-lg"
           >
-            {loading ? "Opening map..." : "Enter pathway map"}
+            {loading ? "Opening map..." : "Enter Ficus pathway map"}
           </button>
         </div>
       </form>
@@ -112,12 +119,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-slate-400">{label}</span>
+      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-ficus-cream/60">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-sky-300/60 focus:bg-white/[0.12]"
+        className="w-full rounded-2xl border border-ficus-cream/12 bg-ficus-plum/40 px-4 py-3 text-sm text-ficus-cream outline-none transition placeholder:text-ficus-cream/40 focus:border-ficus-coral/60 focus:bg-ficus-plum/60"
       />
     </label>
   );
@@ -136,14 +143,14 @@ function SelectField({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-slate-400">{label}</span>
+      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-ficus-cream/60">{label}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-sm text-white outline-none transition focus:border-sky-300/60 focus:bg-white/[0.12]"
+        className="w-full rounded-2xl border border-ficus-cream/12 bg-ficus-plum/40 px-4 py-3 text-sm text-ficus-cream outline-none transition focus:border-ficus-coral/60 focus:bg-ficus-plum/60"
       >
         {options.map((option) => (
-          <option key={option} value={option} className="bg-slate-900">
+          <option key={option} value={option} className="bg-ficus-plum">
             {option}
           </option>
         ))}
