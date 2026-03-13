@@ -9,7 +9,7 @@ import boto3
 class S3Client:
     def __init__(self) -> None:
         self.bucket = os.getenv("S3_BUCKET")
-        self.key = os.getenv("S3_BRANCH_DATA_KEY", "updated-academic-gps/seed_nodes.json")
+        self.key = os.getenv("S3_BRANCH_DATA_KEY", "updated-academic-gps/uoft_opportunities.json")
         self.region = os.getenv("AWS_REGION")
         self.enabled = bool(self.bucket and self.region and os.getenv("ENABLE_S3") == "true")
         self.client = boto3.client("s3", region_name=self.region) if self.enabled else None

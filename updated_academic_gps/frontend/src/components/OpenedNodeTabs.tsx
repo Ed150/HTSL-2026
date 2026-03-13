@@ -18,7 +18,7 @@ export function OpenedNodeTabs({ tabs, activeTabId, onSelect, onClose }: Props) 
       <div className="scrollbar flex-1 space-y-2 overflow-auto pr-1">
         {tabs.length === 0 && (
           <div className="rounded-2xl border border-dashed border-white/12 bg-white/[0.05] px-3 py-4 text-xs leading-5 text-slate-400">
-            Double-click any bubble to open a richer node page here.
+            Single-click any bubble to open a richer UofT opportunity page here.
           </div>
         )}
         {tabs.map((tab) => (
@@ -37,7 +37,7 @@ export function OpenedNodeTabs({ tabs, activeTabId, onSelect, onClose }: Props) 
                 <X size={12} />
               </button>
             </div>
-            {tab.node.id === activeTabId && <p className="text-xs leading-5 text-slate-300">{tab.fit_with_path}</p>}
+            {tab.node.id === activeTabId && <p className="text-xs leading-5 text-slate-300">{tab.campus_relevance}</p>}
           </div>
         ))}
       </div>

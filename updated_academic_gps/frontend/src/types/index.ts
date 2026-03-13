@@ -1,9 +1,14 @@
 export type UserProfile = {
+  campus: string;
+  program: string;
+  year: string;
   skills: string[];
   interests: string[];
   desired_careers: string[];
   desired_opportunities: string[];
   desired_skills: string[];
+  target_industries: string[];
+  preferred_opportunity_types: string[];
 };
 
 export type NodeType =
@@ -29,6 +34,15 @@ export type PositionedNode = {
   why_it_matters: string;
   logical_next_step: string;
   links: string[];
+  source: string;
+  source_url: string;
+  campus: string;
+  faculty: string;
+  tags: string[];
+  eligibility: string;
+  related_roles: string[];
+  related_skills: string[];
+  quick_actions: string[];
   confidence: number;
   end_cap: boolean;
   x: number;
@@ -40,20 +54,11 @@ export type PositionedNode = {
   path_ids: string[];
 };
 
-export type EdgePayload = {
-  id: string;
-  source: string;
-  target: string;
-  label: string;
-  branch_index: number;
-};
-
 export type PathRecord = {
   id: string;
   name: string;
   profile: UserProfile;
   nodes: PositionedNode[];
-  edges: EdgePayload[];
   active_node_id: string;
   breadcrumbs: string[];
   summary_ready: boolean;
@@ -70,5 +75,7 @@ export type SummaryResponse = {
 export type DetailResponse = {
   node: PositionedNode;
   fit_with_path: string;
+  campus_relevance: string;
+  quick_actions: string[];
   unlocks_next: string[];
 };

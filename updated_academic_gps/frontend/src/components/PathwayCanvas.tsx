@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useRef, useState } from "react";
-import { EdgePayload, PathRecord, PositionedNode } from "../types";
+import { PathRecord, PositionedNode } from "../types";
 
 type Props = {
   path: PathRecord;
@@ -34,7 +34,6 @@ export function PathwayCanvas({
   const clickTimer = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const activeNode = path.nodes.find((node) => node.id === path.active_node_id) ?? path.nodes[0];
-  const nodesById = useMemo(() => Object.fromEntries(path.nodes.map((node) => [node.id, node])), [path.nodes]);
 
   const visibleNodes = useMemo(
     () =>
@@ -45,7 +44,6 @@ export function PathwayCanvas({
       }),
     [path.nodes, activeNode.id]
   );
-  const visibleNodeIds = useMemo(() => new Set(visibleNodes.map((node) => node.id)), [visibleNodes]);
   const hoveredNode = visibleNodes.find((node) => node.id === hoveredId) ?? null;
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
@@ -57,7 +55,7 @@ export function PathwayCanvas({
     if (!dragging || !dragStart.current) return;
     onPanChange({
       x: dragStart.current.panX + (event.clientX - dragStart.current.x),
-      y: dragStart.current.panY + (event.clientY - dragStart.current.y)
+      y: dragStart.current.panY + (event.clientY - dragStart.current.y),
     });
   };
 
@@ -88,15 +86,12 @@ export function PathwayCanvas({
   const previewPosition = hoveredNode
     ? {
         left: `calc(50% + ${hoveredNode.x * zoom + pan.x + 96}px)`,
-        top: `calc(50% + ${hoveredNode.y * zoom + pan.y - 34}px)`
+        top: `calc(50% + ${hoveredNode.y * zoom + pan.y - 34}px)`,
       }
     : null;
 
-  const handleNodeClick = (node: PositionedNode) => {
-    if (clickTimer.current) {
-      window.clearTimeout(clickTimer.current);
-      clickTimer.current = null;
-    }
+  const handleSingleClick = (node: PositionedNode) => {
+    if (clickTimer.current) window.clearTimeout(clickTimer.current);
     clickTimer.current = window.setTimeout(() => {
       onSelect(node);
       onOpenDetail(node);
@@ -104,7 +99,7 @@ export function PathwayCanvas({
     }, 180);
   };
 
-  const handleNodeDoubleClick = (node: PositionedNode) => {
+  const handleDoubleClick = (node: PositionedNode) => {
     if (clickTimer.current) {
       window.clearTimeout(clickTimer.current);
       clickTimer.current = null;
@@ -130,25 +125,18 @@ export function PathwayCanvas({
         transition={dragging ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 24 }}
         style={{ transformOrigin: "center center" }}
       >
-        <svg className="absolute inset-0 h-full w-full overflow-visible">
-          {path.edges
-            .filter((edge) => visibleNodeIds.has(edge.source) && visibleNodeIds.has(edge.target))
-            .map((edge) => (
-              <Edge key={edge.id} edge={edge} source={nodesById[edge.source]} target={nodesById[edge.target]} activeNodeId={activeNode.id} />
-            ))}
-        </svg>
-
         <AnimatePresence>
           {visibleNodes.map((node, index) => {
             const active = node.id === activeNode.id;
             const childOption = node.parent_id === activeNode.id && !node.visited;
             const nodeRadius = active ? 108 : childOption ? 64 : 58;
-            const ambientDelay = index * 0.08;
+            const hovered = hoveredId === node.id;
+            const bubbleState = getBubbleState({ active, hovered, visited: node.visited, childOption });
 
             return (
               <motion.button
                 key={node.id}
-                initial={{ opacity: 0, scale: 0.88 }}
+                initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ type: "spring", stiffness: 230, damping: 24 }}
@@ -156,74 +144,74 @@ export function PathwayCanvas({
                 onMouseLeave={() => setHoveredId((current) => (current === node.id ? null : current))}
                 onClick={(event) => {
                   event.stopPropagation();
-                  handleNodeClick(node);
+                  handleSingleClick(node);
                 }}
                 onDoubleClick={(event) => {
                   event.stopPropagation();
-                  handleNodeDoubleClick(node);
+                  handleDoubleClick(node);
                 }}
                 className={`absolute -translate-x-1/2 -translate-y-1/2 rounded-full outline-none ${
-                  active ? "z-30" : hoveredId === node.id ? "z-20" : "z-10"
+                  active ? "z-30" : hovered ? "z-20" : "z-10"
                 }`}
                 style={{ left: node.x + WORLD_HALF, top: node.y + WORLD_HALF, width: nodeRadius * 2, height: nodeRadius * 2 }}
               >
                 <motion.div
-                  animate={{
-                    scale: active ? [1, 1.012, 1] : hoveredId === node.id ? 1.04 : [1, 1.008, 1],
-                    y: active ? [0, -1.5, 0] : [0, -1, 0],
-                    boxShadow: active
-                      ? [
-                          "0 0 0 1px rgba(125,211,252,0.34), 0 0 52px rgba(94,164,255,0.26)",
-                          "0 0 0 1px rgba(125,211,252,0.42), 0 0 74px rgba(94,164,255,0.38)",
-                          "0 0 0 1px rgba(125,211,252,0.34), 0 0 52px rgba(94,164,255,0.26)",
-                        ]
-                      : hoveredId === node.id
-                        ? "0 0 0 1px rgba(255,255,255,0.18), 0 0 52px rgba(133,123,255,0.28)"
-                        : [
-                            "0 0 0 1px rgba(255,255,255,0.14), 0 18px 42px rgba(15,23,42,0.42)",
-                            "0 0 0 1px rgba(255,255,255,0.18), 0 24px 54px rgba(15,23,42,0.46)",
-                            "0 0 0 1px rgba(255,255,255,0.14), 0 18px 42px rgba(15,23,42,0.42)",
-                          ]
-                  }}
+                  aria-hidden="true"
+                  className="absolute -inset-[14%] rounded-full blur-2xl"
+                  animate={bubbleState.halo}
                   transition={{
-                    duration: active ? 3.2 : 4.6,
+                    duration: bubbleState.haloDuration,
                     repeat: Infinity,
                     ease: "easeInOut",
-                    delay: ambientDelay,
+                    delay: index * 0.08,
                   }}
-                  className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-full border text-center ${
-                    active
-                      ? "border-sky-300/65 bg-gradient-to-br from-sky-400/34 via-indigo-400/24 to-fuchsia-400/26"
-                      : childOption
-                        ? "border-fuchsia-300/28 bg-gradient-to-br from-white/[0.14] to-white/[0.08]"
-                        : "border-slate-200/16 bg-slate-100/[0.10]"
-                  }`}
+                  style={{ background: bubbleState.haloBackground }}
+                />
+                <motion.div
+                  animate={bubbleState.shell}
+                  whileHover={{ scale: 1.03 }}
+                  transition={{
+                    duration: bubbleState.duration,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.08,
+                  }}
+                  className={`relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-full border text-center ${bubbleState.className}`}
                 >
                   <motion.div
                     aria-hidden="true"
-                    className="absolute inset-[12%] rounded-full blur-xl"
-                    animate={{
-                      opacity: active ? [0.3, 0.48, 0.3] : [0.14, 0.22, 0.14],
-                      scale: active ? [0.92, 1.04, 0.92] : [0.96, 1.01, 0.96],
+                    className="absolute inset-[10%] rounded-full blur-xl"
+                    animate={bubbleState.core}
+                    transition={{
+                      duration: bubbleState.coreDuration,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.05,
                     }}
-                    transition={{ duration: active ? 3.4 : 4.8, repeat: Infinity, ease: "easeInOut", delay: ambientDelay }}
-                    style={{
-                      background: active
-                        ? "radial-gradient(circle, rgba(94,164,255,0.42), rgba(133,123,255,0.14), transparent 72%)"
-                        : "radial-gradient(circle, rgba(255,255,255,0.12), rgba(133,123,255,0.08), transparent 72%)",
-                    }}
+                    style={{ background: bubbleState.coreBackground }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+                  <motion.div
+                    aria-hidden="true"
+                    className="absolute inset-[5%] rounded-full border"
+                    animate={bubbleState.ring}
+                    transition={{
+                      duration: bubbleState.ringDuration,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                    style={{ borderColor: bubbleState.ringColor }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/12 via-transparent to-transparent" />
                   <div className="relative flex max-w-[76%] flex-col items-center gap-1.5">
-                    <div className="text-[9px] uppercase tracking-[0.22em] text-slate-300/85">{node.type}</div>
-                    <div className={`${active ? "text-[13px]" : "text-[11px]"} font-medium leading-[1.15] text-white`}>
-                      {shorten(node.title, active ? 28 : 18)}
+                    <div className="text-[9px] uppercase tracking-[0.22em] text-slate-300/88">{node.type}</div>
+                    <div className={`${active ? "text-[13px]" : "text-[11px]"} font-medium leading-[1.12] text-white`}>
+                      {shorten(node.title, active ? 30 : 18)}
                     </div>
                     {active && (
                       <div className="flex flex-wrap justify-center gap-1">
-                        {node.skills_gained.slice(0, 3).map((skill) => (
+                        {(node.tags.length > 0 ? node.tags : node.skills_gained).slice(0, 3).map((skill) => (
                           <span key={skill} className="rounded-full bg-white/12 px-2 py-1 text-[8px] text-slate-100">
-                            {shorten(skill, 10)}
+                            {shorten(skill, 11)}
                           </span>
                         ))}
                       </div>
@@ -243,12 +231,16 @@ export function PathwayCanvas({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 6, scale: 0.98 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-none absolute z-40 w-[240px] rounded-[22px] border border-white/12 bg-slate-950/88 p-3 shadow-[0_18px_50px_rgba(0,0,0,0.42)] backdrop-blur-xl"
+            className="pointer-events-none absolute z-40 w-[260px] rounded-[22px] border border-white/12 bg-slate-950/90 p-3 shadow-[0_18px_50px_rgba(0,0,0,0.42)] backdrop-blur-xl"
             style={previewPosition}
           >
             <div className="text-[10px] uppercase tracking-[0.22em] text-slate-400">{hoveredNode.type}</div>
             <div className="mt-1 text-sm font-medium text-white">{hoveredNode.title}</div>
-            <p className="mt-2 text-xs leading-5 text-slate-300">{shorten(hoveredNode.short_summary, 110)}</p>
+            <div className="mt-1 text-[11px] text-slate-400">
+              {hoveredNode.source}
+              {hoveredNode.campus ? ` | ${hoveredNode.campus}` : ""}
+            </div>
+            <p className="mt-2 text-xs leading-5 text-slate-300">{shorten(hoveredNode.short_summary, 118)}</p>
             <div className="mt-3 flex flex-wrap gap-1.5">
               {hoveredNode.skills_gained.slice(0, 4).map((skill) => (
                 <span key={skill} className="rounded-full bg-white/10 px-2 py-1 text-[10px] text-slate-100">
@@ -256,7 +248,7 @@ export function PathwayCanvas({
                 </span>
               ))}
             </div>
-            <p className="mt-3 text-[11px] leading-5 text-slate-400">{shorten(hoveredNode.why_it_matters, 108)}</p>
+            <p className="mt-3 text-[11px] leading-5 text-slate-400">{shorten(hoveredNode.why_it_matters, 110)}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -264,60 +256,148 @@ export function PathwayCanvas({
   );
 }
 
-function Edge({
-  source,
-  target,
-  activeNodeId,
+function getBubbleState({
+  active,
+  hovered,
+  visited,
+  childOption,
 }: {
-  edge: EdgePayload;
-  source?: PositionedNode;
-  target?: PositionedNode;
-  activeNodeId: string;
+  active: boolean;
+  hovered: boolean;
+  visited: boolean;
+  childOption: boolean;
 }) {
-  if (!source || !target) return null;
+  if (active) {
+    return {
+      className: "border-sky-300/65 bg-gradient-to-br from-sky-400/36 via-indigo-400/22 to-fuchsia-400/24",
+      duration: 3.4,
+      coreDuration: 3.1,
+      ringDuration: 4.2,
+      haloDuration: 4.7,
+      haloBackground: "radial-gradient(circle, rgba(86,165,255,0.46), rgba(123,97,255,0.18), transparent 72%)",
+      coreBackground: "radial-gradient(circle, rgba(255,255,255,0.18), rgba(117,165,255,0.16), transparent 74%)",
+      ringColor: "rgba(191,219,254,0.28)",
+      shell: {
+        boxShadow: [
+          "0 0 0 1px rgba(125,211,252,0.34), 0 0 44px rgba(94,164,255,0.26)",
+          "0 0 0 1px rgba(125,211,252,0.46), 0 0 84px rgba(94,164,255,0.42)",
+          "0 0 0 1px rgba(125,211,252,0.34), 0 0 44px rgba(94,164,255,0.26)",
+        ],
+        opacity: [0.985, 1, 0.985],
+      },
+      halo: {
+        opacity: [0.42, 0.62, 0.42],
+        scale: [0.96, 1.08, 0.96],
+      },
+      core: {
+        opacity: [0.18, 0.36, 0.18],
+        scale: [0.92, 1.06, 0.92],
+      },
+      ring: {
+        opacity: [0.35, 0.7, 0.35],
+        scale: [0.96, 1.03, 0.96],
+      },
+    };
+  }
 
-  const sourceRadius = getRadius(source, activeNodeId);
-  const targetRadius = getRadius(target, activeNodeId);
-  const dx = target.x - source.x;
-  const dy = target.y - source.y;
-  const distance = Math.max(Math.hypot(dx, dy), 1);
-  const unitX = dx / distance;
-  const unitY = dy / distance;
-  const normalX = -unitY;
-  const normalY = unitX;
+  if (hovered) {
+    return {
+      className: childOption
+        ? "border-fuchsia-300/42 bg-gradient-to-br from-white/[0.18] to-white/[0.10]"
+        : "border-slate-100/24 bg-slate-100/[0.12]",
+      duration: 3.8,
+      coreDuration: 3.8,
+      ringDuration: 4.8,
+      haloDuration: 5.2,
+      haloBackground: "radial-gradient(circle, rgba(173,139,255,0.32), rgba(110,176,255,0.14), transparent 72%)",
+      coreBackground: "radial-gradient(circle, rgba(255,255,255,0.16), rgba(173,139,255,0.12), transparent 72%)",
+      ringColor: "rgba(255,255,255,0.18)",
+      shell: {
+        boxShadow: [
+          "0 0 0 1px rgba(255,255,255,0.16), 0 0 36px rgba(133,123,255,0.22)",
+          "0 0 0 1px rgba(255,255,255,0.24), 0 0 56px rgba(133,123,255,0.34)",
+          "0 0 0 1px rgba(255,255,255,0.16), 0 0 36px rgba(133,123,255,0.22)",
+        ],
+        opacity: [0.99, 1, 0.99],
+      },
+      halo: {
+        opacity: [0.22, 0.34, 0.22],
+        scale: [0.98, 1.05, 0.98],
+      },
+      core: {
+        opacity: [0.14, 0.24, 0.14],
+        scale: [0.96, 1.03, 0.96],
+      },
+      ring: {
+        opacity: [0.24, 0.48, 0.24],
+        scale: [0.98, 1.02, 0.98],
+      },
+    };
+  }
 
-  const start = { x: source.x + unitX * sourceRadius + WORLD_HALF, y: source.y + unitY * sourceRadius + WORLD_HALF };
-  const end = { x: target.x - unitX * targetRadius + WORLD_HALF, y: target.y - unitY * targetRadius + WORLD_HALF };
-  const bend = Math.min(42, distance * 0.12);
-  const control = { x: (start.x + end.x) / 2 + normalX * bend, y: (start.y + end.y) / 2 + normalY * bend };
-  const pathValue = `M ${start.x} ${start.y} Q ${control.x} ${control.y} ${end.x} ${end.y}`;
+  if (visited) {
+    return {
+      className: "border-slate-100/18 bg-slate-100/[0.10]",
+      duration: 5.6,
+      coreDuration: 5.4,
+      ringDuration: 6.2,
+      haloDuration: 6.8,
+      haloBackground: "radial-gradient(circle, rgba(103,143,255,0.14), rgba(255,255,255,0.05), transparent 76%)",
+      coreBackground: "radial-gradient(circle, rgba(255,255,255,0.10), rgba(164,173,255,0.06), transparent 75%)",
+      ringColor: "rgba(255,255,255,0.10)",
+      shell: {
+        boxShadow: [
+          "0 0 0 1px rgba(255,255,255,0.12), 0 14px 32px rgba(15,23,42,0.38)",
+          "0 0 0 1px rgba(255,255,255,0.18), 0 20px 42px rgba(15,23,42,0.42)",
+          "0 0 0 1px rgba(255,255,255,0.12), 0 14px 32px rgba(15,23,42,0.38)",
+        ],
+        opacity: [0.985, 1, 0.985],
+      },
+      halo: {
+        opacity: [0.1, 0.18, 0.1],
+        scale: [0.98, 1.02, 0.98],
+      },
+      core: {
+        opacity: [0.08, 0.14, 0.08],
+        scale: [0.97, 1.01, 0.97],
+      },
+      ring: {
+        opacity: [0.14, 0.22, 0.14],
+        scale: [0.99, 1.01, 0.99],
+      },
+    };
+  }
 
-  const tangent = normalize({ x: end.x - control.x, y: end.y - control.y });
-  const arrowTip = { x: end.x, y: end.y };
-  const arrowBase = { x: arrowTip.x - tangent.x * 13, y: arrowTip.y - tangent.y * 13 };
-  const sideX = -tangent.y * 5;
-  const sideY = tangent.x * 5;
-  const arrowLeft = { x: arrowBase.x + sideX, y: arrowBase.y + sideY };
-  const arrowRight = { x: arrowBase.x - sideX, y: arrowBase.y - sideY };
-  const arrowPoints = `${arrowTip.x},${arrowTip.y} ${arrowLeft.x},${arrowLeft.y} ${arrowRight.x},${arrowRight.y}`;
-
-  return (
-    <>
-      <path d={pathValue} fill="none" stroke="rgba(191,219,254,0.58)" strokeWidth="2.4" strokeLinecap="round" />
-      <polygon points={arrowPoints} fill="rgba(191,219,254,0.78)" />
-    </>
-  );
-}
-
-function getRadius(node: PositionedNode, activeNodeId: string) {
-  if (node.id === activeNodeId) return 108;
-  if (node.parent_id === activeNodeId && !node.visited) return 64;
-  return 58;
-}
-
-function normalize(vector: { x: number; y: number }) {
-  const length = Math.max(Math.hypot(vector.x, vector.y), 1);
-  return { x: vector.x / length, y: vector.y / length };
+  return {
+    className: "border-fuchsia-300/28 bg-gradient-to-br from-white/[0.14] to-white/[0.08]",
+    duration: 5.2,
+    coreDuration: 4.9,
+    ringDuration: 5.8,
+    haloDuration: 6,
+    haloBackground: "radial-gradient(circle, rgba(255,255,255,0.14), rgba(133,123,255,0.08), transparent 76%)",
+    coreBackground: "radial-gradient(circle, rgba(255,255,255,0.12), rgba(163,139,255,0.08), transparent 76%)",
+    ringColor: "rgba(255,255,255,0.09)",
+    shell: {
+      boxShadow: [
+        "0 0 0 1px rgba(255,255,255,0.13), 0 16px 36px rgba(15,23,42,0.4)",
+        "0 0 0 1px rgba(255,255,255,0.18), 0 22px 46px rgba(15,23,42,0.44)",
+        "0 0 0 1px rgba(255,255,255,0.13), 0 16px 36px rgba(15,23,42,0.4)",
+      ],
+      opacity: [0.985, 1, 0.985],
+    },
+    halo: {
+      opacity: [0.12, 0.2, 0.12],
+      scale: [0.98, 1.03, 0.98],
+    },
+    core: {
+      opacity: [0.1, 0.16, 0.1],
+      scale: [0.97, 1.02, 0.97],
+    },
+    ring: {
+      opacity: [0.12, 0.2, 0.12],
+      scale: [0.99, 1.01, 0.99],
+    },
+  };
 }
 
 function clamp(value: number, min: number, max: number) {

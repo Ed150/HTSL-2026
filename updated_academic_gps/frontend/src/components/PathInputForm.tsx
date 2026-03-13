@@ -7,33 +7,35 @@ type Props = {
   loading: boolean;
 };
 
+type DraftLists = {
+  skills: string;
+  interests: string;
+  desired_careers: string;
+  desired_opportunities: string;
+  desired_skills: string;
+  target_industries: string;
+  preferred_opportunity_types: string;
+};
+
 export function PathInputForm({ onStart, loading }: Props) {
   const [profile, setProfile] = useState<UserProfile>(demoProfile);
-  const [drafts, setDrafts] = useState({
-    skills: demoProfile.skills.join(", "),
-    interests: demoProfile.interests.join(", "),
-    desired_careers: demoProfile.desired_careers.join(", "),
-    desired_opportunities: demoProfile.desired_opportunities.join(", "),
-    desired_skills: demoProfile.desired_skills.join(", "),
-  });
+  const [drafts, setDrafts] = useState<DraftLists>(makeDrafts(demoProfile));
 
-  const setList = (key: keyof UserProfile, value: string) => {
+  const setList = (key: keyof DraftLists, value: string) => {
     setDrafts((current) => ({ ...current, [key]: value }));
     setProfile((current) => ({
       ...current,
-      [key]: value.split(",").map((item) => item.trim()).filter(Boolean)
+      [key]: value.split(",").map((item) => item.trim()).filter(Boolean),
     }));
+  };
+
+  const setValue = (key: "campus" | "program" | "year", value: string) => {
+    setProfile((current) => ({ ...current, [key]: value }));
   };
 
   const loadDemo = () => {
     setProfile(demoProfile);
-    setDrafts({
-      skills: demoProfile.skills.join(", "),
-      interests: demoProfile.interests.join(", "),
-      desired_careers: demoProfile.desired_careers.join(", "),
-      desired_opportunities: demoProfile.desired_opportunities.join(", "),
-      desired_skills: demoProfile.desired_skills.join(", "),
-    });
+    setDrafts(makeDrafts(demoProfile));
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -43,13 +45,14 @@ export function PathInputForm({ onStart, loading }: Props) {
 
   return (
     <div className="flex h-full items-center justify-center px-6 py-8">
-      <form onSubmit={handleSubmit} className="glass w-full max-w-4xl rounded-[28px] p-6 shadow-glow">
+      <form onSubmit={handleSubmit} className="glass w-full max-w-5xl rounded-[28px] p-6 shadow-glow">
         <div className="mb-6 flex items-end justify-between gap-4">
           <div>
-            <p className="mb-2 text-xs uppercase tracking-[0.28em] text-sky-300/80">Academic GPS</p>
-            <h1 className="text-3xl font-semibold tracking-tight text-white">Build your path by stepping through possibility bubbles.</h1>
-            <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300">
-              Start with your skills, interests, and ambitions. We&apos;ll turn that into a spatial branching map you can grow, revisit, and summarize.
+            <p className="mb-2 text-xs uppercase tracking-[0.28em] text-sky-300/80">Academic GPS for UofT</p>
+            <h1 className="text-3xl font-semibold tracking-tight text-white">Build a UofT pathway one opportunity bubble at a time.</h1>
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">
+              Start with your campus context, interests, and goals. We&apos;ll turn them into a compact branching map of UofT-relevant labs,
+              courses, student communities, work-study leads, and startup pathways.
             </p>
           </div>
           <button
@@ -57,20 +60,32 @@ export function PathInputForm({ onStart, loading }: Props) {
             onClick={loadDemo}
             className="rounded-full border border-white/12 bg-white/[0.08] px-4 py-2 text-sm text-slate-100 transition hover:bg-white/[0.12]"
           >
-            Load demo profile
+            Load UofT demo
           </button>
         </div>
-        <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Skills" value={drafts.skills} onChange={(value) => setList("skills", value)} />
-          <Field label="Interests" value={drafts.interests} onChange={(value) => setList("interests", value)} />
-          <Field label="Desired careers" value={drafts.desired_careers} onChange={(value) => setList("desired_careers", value)} />
-          <Field label="Desired opportunities" value={drafts.desired_opportunities} onChange={(value) => setList("desired_opportunities", value)} />
-          <div className="md:col-span-2">
-            <Field label="Desired skills to build" value={drafts.desired_skills} onChange={(value) => setList("desired_skills", value)} />
+
+        <div className="grid gap-4 lg:grid-cols-[1.2fr,1fr]">
+          <div className="grid gap-4 md:grid-cols-2">
+            <SelectField label="Campus" value={profile.campus} onChange={(value) => setValue("campus", value)} options={["St. George", "Scarborough", "Mississauga"]} />
+            <Field label="Program or faculty" value={profile.program} onChange={(value) => setValue("program", value)} placeholder="Engineering Science, Rotman, CS, Physics..." />
+            <Field label="Year of study" value={profile.year} onChange={(value) => setValue("year", value)} placeholder="First Year, Third Year, MSc..." />
+            <Field label="Current skills" value={drafts.skills} onChange={(value) => setList("skills", value)} placeholder="Python, writing, CAD..." />
+            <Field label="Interests" value={drafts.interests} onChange={(value) => setList("interests", value)} placeholder="Quantum, fintech, robotics..." />
+            <Field label="Desired skills" value={drafts.desired_skills} onChange={(value) => setList("desired_skills", value)} placeholder="Research communication, product sense..." />
+          </div>
+
+          <div className="grid gap-4">
+            <Field label="Target careers" value={drafts.desired_careers} onChange={(value) => setList("desired_careers", value)} placeholder="Clinical ML researcher, product manager..." />
+            <Field label="Preferred opportunity types" value={drafts.preferred_opportunity_types} onChange={(value) => setList("preferred_opportunity_types", value)} placeholder="Lab, design team, work-study..." />
+            <Field label="Desired opportunities" value={drafts.desired_opportunities} onChange={(value) => setList("desired_opportunities", value)} placeholder="Research lab, startup hub, workshop..." />
+            <Field label="Target industries" value={drafts.target_industries} onChange={(value) => setList("target_industries", value)} placeholder="Biotech, deep tech, fintech..." />
           </div>
         </div>
+
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-xs text-slate-400">Designed for a compact laptop demo: map-first, fluid, and branchable.</p>
+          <p className="text-xs text-slate-400">
+            Personalized around UofT opportunities with safe public-data ingestion and local demo fallback.
+          </p>
           <button
             type="submit"
             disabled={loading}
@@ -84,15 +99,67 @@ export function PathInputForm({ onStart, loading }: Props) {
   );
 }
 
-function Field({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+function Field({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) {
   return (
     <label className="block">
       <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-slate-400">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
         className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-sky-300/60 focus:bg-white/[0.12]"
       />
     </label>
   );
+}
+
+function SelectField({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: string[];
+}) {
+  return (
+    <label className="block">
+      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-slate-400">{label}</span>
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="w-full rounded-2xl border border-white/12 bg-white/[0.08] px-4 py-3 text-sm text-white outline-none transition focus:border-sky-300/60 focus:bg-white/[0.12]"
+      >
+        {options.map((option) => (
+          <option key={option} value={option} className="bg-slate-900">
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
+function makeDrafts(profile: UserProfile): DraftLists {
+  return {
+    skills: profile.skills.join(", "),
+    interests: profile.interests.join(", "),
+    desired_careers: profile.desired_careers.join(", "),
+    desired_opportunities: profile.desired_opportunities.join(", "),
+    desired_skills: profile.desired_skills.join(", "),
+    target_industries: profile.target_industries.join(", "),
+    preferred_opportunity_types: profile.preferred_opportunity_types.join(", "),
+  };
 }
