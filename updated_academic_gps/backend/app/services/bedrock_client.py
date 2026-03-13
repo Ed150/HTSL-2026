@@ -9,7 +9,7 @@ from app.models.schemas import NodePayload, SummaryResponse, UserProfile
 
 class BedrockClient:
     def __init__(self) -> None:
-        self.region = os.getenv("AWS_REGION")
+        self.region = os.getenv("us-west-2")
         self.model_id = os.getenv("BEDROCK_MODEL_ID", "anthropic.claude-3-5-sonnet-20240620-v1:0")
         self.enabled = bool(self.region and os.getenv("ENABLE_BEDROCK") == "true")
         self.client = boto3.client("bedrock-runtime", region_name=self.region) if self.enabled else None
