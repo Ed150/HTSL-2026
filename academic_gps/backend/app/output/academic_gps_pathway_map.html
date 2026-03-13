@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Academic GPS Pathway Map</title>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: radial-gradient(circle at top, #eff6ff, #ffffff 45%, #e0f2fe);
+      color: #0f172a;
+    }
+    .wrap {
+      padding: 32px;
+    }
+    #network {
+      height: 78vh;
+      background: rgba(255,255,255,0.9);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Academic GPS Pathway Map</h1>
+    <p>Interactive export for hackathon demo mode.</p>
+    <div id="network"></div>
+  </div>
+  <script>
+    const payload = {"nodes": [{"id": "interest-anchor", "label": "Your Interest", "type": "interest", "size": 28, "color": "#1d4ed8", "detail": "I'm interested in quantum computing and photonics.", "highlighted": true}, {"id": "lab-quantum-photonics", "label": "Quantum Photonics Lab", "type": "lab", "size": 32, "color": "#f97316", "detail": "Photonic quantum processors and networking.", "highlighted": true}, {"id": "lab-ai-health", "label": "AI for Health Systems Group", "type": "lab", "size": 22, "color": "#f97316", "detail": "Machine learning for diagnostics and care flow.", "highlighted": true}, {"id": "lab-ml-systems", "label": "Scalable ML Systems Lab", "type": "lab", "size": 22, "color": "#f97316", "detail": "Efficient training, serving, and inference.", "highlighted": true}, {"id": "prof-chen", "label": "Prof. Maya Chen", "type": "professor", "size": 32, "color": "#7c3aed", "detail": "Quantum photonics and optical hardware.", "highlighted": true}, {"id": "prof-li", "label": "Prof. Yvonne Li", "type": "professor", "size": 27, "color": "#7c3aed", "detail": "Photonic materials and quantum networking.", "highlighted": true}, {"id": "prof-park", "label": "Prof. Daniel Park", "type": "professor", "size": 22, "color": "#7c3aed", "detail": "Robotics, autonomy, and startup pilots.", "highlighted": true}, {"id": "course-quantum-optics", "label": "ECE470 Quantum Optics", "type": "course", "size": 32, "color": "#0891b2", "detail": "Photonic systems and optical hardware.", "highlighted": false}, {"id": "course-quantum-algorithms", "label": "CSC473 Quantum Algorithms", "type": "course", "size": 25, "color": "#0891b2", "detail": "Quantum advantage and algorithms.", "highlighted": false}, {"id": "event-quantum-seminar", "label": "Quantum Optics Seminar", "type": "event", "size": 32, "color": "#f43f5e", "detail": "Weekly photonic quantum seminar.", "highlighted": false}, {"id": "event-lab-open-house", "label": "Research Lab Open House", "type": "event", "size": 26, "color": "#f43f5e", "detail": "Meet faculty and tour labs.", "highlighted": false}, {"id": "alum-xanadu", "label": "Priya Desai at Xanadu", "type": "alumni", "size": 32, "color": "#16a34a", "detail": "Quantum photonics alum in hardware.", "highlighted": true}, {"id": "alum-1qbit", "label": "Ethan Cole at 1QBit", "type": "alumni", "size": 24, "color": "#16a34a", "detail": "Quantum algorithms to commercial applications.", "highlighted": true}, {"id": "alum-recursion", "label": "Mia Thompson at Recursion", "type": "alumni", "size": 22, "color": "#16a34a", "detail": "Computational biology and therapeutic ML.", "highlighted": true}, {"id": "action-1", "label": "Review Prof. Maya Chen's latest projects", "type": "action", "size": 18, "color": "#eab308", "detail": "A focused scan sharpens your understanding of fit before outreach. This directly supports your interest in interested / in / quantum.", "highlighted": false}, {"id": "action-2", "label": "Draft a short outreach note for Prof. Yvonne Li", "type": "action", "size": 18, "color": "#eab308", "detail": "Outreach turns passive discovery into a real connection. This directly supports your interest in interested / in / quantum.", "highlighted": false}, {"id": "action-3", "label": "Attend or prep for Quantum Photonics Lab", "type": "action", "size": 18, "color": "#eab308", "detail": "Showing up builds signal, context, and conversation starters. This directly supports your interest in interested / in / quantum.", "highlighted": false}, {"id": "action-4", "label": "Map how AI for Health Systems Group fits your pathway", "type": "action", "size": 18, "color": "#eab308", "detail": "A short planning block helps you connect opportunities to long-term goals. This directly supports your interest in interested / in / quantum.", "highlighted": false}], "edges": [{"source": "interest-anchor", "target": "lab-quantum-photonics", "label": "aligned with", "weight": 1.0, "highlighted": true}, {"source": "interest-anchor", "target": "lab-ai-health", "label": "aligned with", "weight": 1.0, "highlighted": true}, {"source": "interest-anchor", "target": "lab-ml-systems", "label": "aligned with", "weight": 1.0, "highlighted": true}, {"source": "lab-quantum-photonics", "target": "prof-chen", "label": "led by", "weight": 1.0, "highlighted": true}, {"source": "lab-quantum-photonics", "target": "prof-li", "label": "led by", "weight": 1.0, "highlighted": true}, {"source": "lab-quantum-photonics", "target": "prof-park", "label": "led by", "weight": 1.0, "highlighted": true}, {"source": "prof-chen", "target": "course-quantum-optics", "label": "learn through", "weight": 1.0, "highlighted": false}, {"source": "prof-chen", "target": "course-quantum-algorithms", "label": "learn through", "weight": 1.0, "highlighted": false}, {"source": "prof-chen", "target": "event-quantum-seminar", "label": "show up to", "weight": 1.0, "highlighted": false}, {"source": "prof-chen", "target": "event-lab-open-house", "label": "show up to", "weight": 1.0, "highlighted": false}, {"source": "event-quantum-seminar", "target": "alum-xanadu", "label": "career pathway", "weight": 1.0, "highlighted": true}, {"source": "event-quantum-seminar", "target": "alum-1qbit", "label": "career pathway", "weight": 1.0, "highlighted": true}, {"source": "event-quantum-seminar", "target": "alum-recursion", "label": "career pathway", "weight": 1.0, "highlighted": true}, {"source": "prof-chen", "target": "action-1", "label": "next step", "weight": 1.0, "highlighted": false}, {"source": "prof-li", "target": "action-2", "label": "next step", "weight": 1.0, "highlighted": false}, {"source": "lab-quantum-photonics", "target": "action-3", "label": "next step", "weight": 1.0, "highlighted": false}, {"source": "lab-ai-health", "target": "action-4", "label": "next step", "weight": 1.0, "highlighted": false}], "highlightedPath": ["interest-anchor", "lab-quantum-photonics", "lab-ai-health", "lab-ml-systems", "prof-chen", "prof-li", "prof-park", "alum-xanadu", "alum-1qbit", "alum-recursion"]};
+    const nodes = new vis.DataSet(payload.nodes.map(node => ({
+      id: node.id,
+      label: node.label,
+      title: node.detail,
+      color: {
+        background: node.color,
+        border: node.highlighted ? '#0f172a' : node.color,
+        highlight: { background: node.color, border: '#0f172a' }
+      },
+      font: { color: '#0f172a', size: 18, face: 'Segoe UI' },
+      size: node.size,
+      shape: 'dot',
+      borderWidth: node.highlighted ? 3 : 1
+    })));
+    const edges = new vis.DataSet(payload.edges.map(edge => ({
+      from: edge.source,
+      to: edge.target,
+      label: edge.label,
+      color: edge.highlighted ? '#0f172a' : '#94a3b8',
+      width: edge.highlighted ? 3 : 1.5,
+      smooth: true,
+      font: { align: 'middle', size: 12 }
+    })));
+    const container = document.getElementById('network');
+    new vis.Network(container, { nodes, edges }, {
+      physics: { stabilization: false, barnesHut: { springLength: 160 } },
+      interaction: { hover: true },
+      nodes: { shadow: true },
+      edges: { arrows: { to: false } }
+    });
+  </script>
+</body>
+</html>

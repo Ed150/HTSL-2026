@@ -1,0 +1,29 @@
+{
+  "busy_windows": [
+    {
+      "title": "Algorithms lecture",
+      "start": "2026-03-16T10:00:00",
+      "end": "2026-03-16T11:30:00"
+    },
+    {
+      "title": "Design team meeting",
+      "start": "2026-03-17T14:00:00",
+      "end": "2026-03-17T15:30:00"
+    },
+    {
+      "title": "TA office hours",
+      "start": "2026-03-18T12:00:00",
+      "end": "2026-03-18T13:00:00"
+    },
+    {
+      "title": "Project sprint",
+      "start": "2026-03-19T16:00:00",
+      "end": "2026-03-19T18:00:00"
+    },
+    {
+      "title": "Startup club",
+      "start": "2026-03-20T11:00:00",
+      "end": "2026-03-20T12:00:00"
+    }
+  ]
+}

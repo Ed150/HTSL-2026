@@ -1,0 +1,46 @@
+{
+  "templates": [
+    {
+      "theme": "quantum",
+      "start_title": "Quantum Systems Explorer",
+      "start_type": "interest",
+      "start_short": "A launch point for turning quantum curiosity into tangible academic moves.",
+      "start_detail": "This path starts from quantum curiosity and branches into research, coursework, projects, and roles that translate advanced theory into visible momentum.",
+      "branches": [
+        {"title": "Join a Photonics Research Lab", "type": "lab", "summary": "Step into optical systems research.", "detail": "This puts you close to experimental work, faculty mentorship, and real lab culture in photonics-heavy quantum environments.", "skills": ["research literacy", "experimental design", "lab communication"], "why": "Labs create the strongest bridge from interest to research credibility.", "next": "Unlocks professor outreach, seminar attendance, and RA roles."},
+        {"title": "Take Quantum Hardware Studio", "type": "course", "summary": "Build hardware intuition with guided coursework.", "detail": "A compact way to learn how quantum systems are implemented across optics, control, and hardware constraints.", "skills": ["hardware intuition", "simulation", "systems thinking"], "why": "Courses reduce ambiguity and build vocabulary for more advanced opportunities.", "next": "Unlocks projects, advanced seminars, and stronger technical conversations."},
+        {"title": "Build a Qubit Simulation Project", "type": "project", "summary": "Create a visible proof-of-interest artifact.", "detail": "A lightweight simulation or visualization project helps transform curiosity into something sharable for professors, labs, or employers.", "skills": ["python", "modeling", "portfolio building"], "why": "Projects make your exploration legible to other people.", "next": "Unlocks portfolio reviews, startup conversations, and research applications."},
+        {"title": "Meet a Professor in Optical Systems", "type": "professor", "summary": "Anchor your path to a human guide.", "detail": "Connecting with a faculty member gives context on which subfields matter and what preparation is actually useful.", "skills": ["question framing", "academic networking", "research direction"], "why": "Faculty conversations compress months of uncertainty into one clear direction.", "next": "Unlocks lab tours, reading lists, and targeted coursework."},
+        {"title": "Explore a Quantum Startup Role", "type": "career", "summary": "See where research can lead commercially.", "detail": "This branch focuses on how quantum and photonics skills convert into product, hardware, or software roles in deep tech companies.", "skills": ["career mapping", "industry awareness", "market framing"], "why": "Career branches make the path feel real and motivating.", "next": "Unlocks alumni outreach, role comparisons, and internship targeting."}
+      ]
+    },
+    {
+      "theme": "ai",
+      "start_title": "AI for Healthcare Navigator",
+      "start_type": "interest",
+      "start_short": "An exploratory map from health-focused AI interests to research and applied impact.",
+      "start_detail": "This path helps connect machine learning, clinical context, and communication skills into research groups, projects, and healthcare outcomes.",
+      "branches": [
+        {"title": "Join Clinical AI Reading Group", "type": "opportunity", "summary": "Enter the field through a low-friction community.", "detail": "A reading group gives language, papers, and people before you commit to a full lab or role.", "skills": ["paper reading", "clinical vocabulary", "discussion"], "why": "Low-friction environments help you test fit quickly.", "next": "Unlocks lab fit, more precise interests, and smart questions."},
+        {"title": "Take Applied ML for Health", "type": "course", "summary": "Learn the practical stack for diagnostics and operations.", "detail": "This course grounds AI concepts in patient flow, diagnostics, and responsible deployment in healthcare contexts.", "skills": ["ml evaluation", "healthcare context", "data framing"], "why": "Structured learning gives you a reliable base for deeper exploration.", "next": "Unlocks projects, internships, and faculty conversations."},
+        {"title": "Prototype a Triage Assistant", "type": "project", "summary": "Build a useful health-focused AI artifact.", "detail": "A demo project around triage or summarization helps you learn product framing, ethics, and model limitations.", "skills": ["product prototyping", "prompt design", "responsible AI"], "why": "Projects turn abstract goals into concrete evidence of fit.", "next": "Unlocks portfolio stories and more relevant networking."},
+        {"title": "Connect with Hospital Innovation Lab", "type": "lab", "summary": "Move closer to live problems and impact.", "detail": "Healthcare innovation teams sit at the intersection of clinicians, operations, and technical builders.", "skills": ["stakeholder communication", "problem discovery", "translation"], "why": "Real-world context makes your technical growth much sharper.", "next": "Unlocks internships, pilots, and role clarity."},
+        {"title": "Aim for Clinical ML Researcher", "type": "job", "summary": "Frame the path around a concrete destination.", "detail": "This branch focuses on the knowledge, evidence, and experiences that make a clinical ML career path believable.", "skills": ["career storytelling", "role targeting", "impact framing"], "why": "Concrete end points create better branching decisions.", "next": "Unlocks milestone planning and adjacent role comparisons."}
+      ]
+    },
+    {
+      "theme": "robotics",
+      "start_title": "Robotics Builder Path",
+      "start_type": "interest",
+      "start_short": "A branching path from robotics enthusiasm to labs, systems work, and startup-ready skills.",
+      "start_detail": "This path helps users build momentum through embodied intelligence, autonomous systems, and visible robotics experiences.",
+      "branches": [
+        {"title": "Join Autonomous Systems Lab", "type": "lab", "summary": "Learn close to research prototypes.", "detail": "A lab environment helps you learn sensing, controls, experimentation, and how robotics teams actually operate.", "skills": ["controls", "robotics teamwork", "systems debugging"], "why": "Labs turn curiosity into repeated exposure and feedback.", "next": "Unlocks demos, papers, and professor mentorship."},
+        {"title": "Take Robot Perception", "type": "course", "summary": "Build the visual and sensing layer.", "detail": "A perception course trains the mathematical and practical intuition behind how robots understand scenes and objects.", "skills": ["computer vision", "sensor fusion", "model evaluation"], "why": "Perception creates leverage across research and startup paths.", "next": "Unlocks manipulation projects and applied demos."},
+        {"title": "Build a Manipulation Demo", "type": "project", "summary": "Create a standout hands-on portfolio piece.", "detail": "A manipulation or autonomy demo makes your path visible and gives you something specific to improve over time.", "skills": ["prototyping", "debugging", "demo storytelling"], "why": "Visible demos make robotics progress instantly legible.", "next": "Unlocks startup nights and lab applications."},
+        {"title": "Attend Robotics Founder Night", "type": "experience", "summary": "See how robotics becomes a company.", "detail": "Meet founders, hear technical constraints, and understand what skills matter outside the classroom.", "skills": ["industry context", "networking", "product framing"], "why": "Career context helps you choose better technical branches.", "next": "Unlocks internships and product-side exploration."},
+        {"title": "Target Robotics Systems Engineer", "type": "job", "summary": "Choose a destination and branch toward it.", "detail": "This path builds toward a concrete systems role spanning sensing, testing, integration, and iteration.", "skills": ["career targeting", "systems framing", "evidence planning"], "why": "End roles help you choose among equally interesting opportunities.", "next": "Unlocks adjacent jobs and skill milestone planning."}
+      ]
+    }
+  ]
+}
