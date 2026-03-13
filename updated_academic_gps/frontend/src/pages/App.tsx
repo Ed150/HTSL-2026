@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { NodeDetailPanel } from "../components/NodeDetailPanel";
 import { OpenedNodeTabs } from "../components/OpenedNodeTabs";
 import { PathBreadcrumb } from "../components/PathBreadcrumb";
@@ -21,20 +21,9 @@ export function App() {
   const [zoom, setZoom] = useState(0.88);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [assistantPrompt, setAssistantPrompt] = useState("Begin with a profile, then build your path one bubble at a time.");
-  const previousActiveNodeId = useRef<string | null>(null);
 
   const activePath = useMemo(() => paths.find((path) => path.id === activePathId) ?? null, [paths, activePathId]);
   const activeDetail = useMemo(() => detailTabs.find((item) => item.node.id === activeDetailId) ?? null, [detailTabs, activeDetailId]);
-
-  useEffect(() => {
-    if (!activePath) return;
-    const activeNode = activePath.nodes.find((node) => node.id === activePath.active_node_id);
-    if (!activeNode) return;
-    if (previousActiveNodeId.current !== activeNode.id) {
-      setPan({ x: -activeNode.x, y: -activeNode.y });
-      previousActiveNodeId.current = activeNode.id;
-    }
-  }, [activePath]);
 
   const handleStart = async (profile: UserProfile) => {
     setLoading(true);
@@ -43,7 +32,7 @@ export function App() {
       setPaths((current) => [response.path, ...current]);
       setActivePathId(response.path.id);
       setZoom(0.88);
-      setAssistantPrompt("Hover a nearby bubble to preview what it builds, then click to move your path forward.");
+      setAssistantPrompt("Single-click a nearby bubble to inspect the UofT fit, then double-click one to commit it as your next step.");
     } finally {
       setLoading(false);
     }
@@ -129,8 +118,8 @@ export function App() {
                 <div className="mt-1 text-sm text-slate-100">{assistantPrompt}</div>
               </div>
               <div className="text-right text-xs text-slate-300/80">
-                <div>Click a bubble to continue</div>
-                <div>Double-click for node detail</div>
+                <div>Single-click for details</div>
+                <div>Double-click to continue the path</div>
               </div>
             </div>
             <div className="min-h-0 flex-1">

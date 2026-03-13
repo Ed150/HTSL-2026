@@ -21,11 +21,16 @@ NodeType = Literal[
 
 
 class UserProfile(BaseModel):
+    campus: str = "St. George"
+    program: str = ""
+    year: str = ""
     skills: list[str] = Field(default_factory=list)
     interests: list[str] = Field(default_factory=list)
     desired_careers: list[str] = Field(default_factory=list)
     desired_opportunities: list[str] = Field(default_factory=list)
     desired_skills: list[str] = Field(default_factory=list)
+    target_industries: list[str] = Field(default_factory=list)
+    preferred_opportunity_types: list[str] = Field(default_factory=list)
 
 
 class NodePayload(BaseModel):
@@ -38,6 +43,15 @@ class NodePayload(BaseModel):
     why_it_matters: str
     logical_next_step: str
     links: list[str] = Field(default_factory=list)
+    source: str = "Academic GPS Demo Data"
+    source_url: str = ""
+    campus: str = ""
+    faculty: str = ""
+    tags: list[str] = Field(default_factory=list)
+    eligibility: str = ""
+    related_roles: list[str] = Field(default_factory=list)
+    related_skills: list[str] = Field(default_factory=list)
+    quick_actions: list[str] = Field(default_factory=list)
     confidence: float = 0.72
     end_cap: bool = False
 
@@ -52,20 +66,11 @@ class PositionedNode(NodePayload):
     path_ids: list[str] = Field(default_factory=list)
 
 
-class EdgePayload(BaseModel):
-    id: str
-    source: str
-    target: str
-    label: str
-    branch_index: int = 0
-
-
 class PathRecord(BaseModel):
     id: str
     name: str
     profile: UserProfile
     nodes: list[PositionedNode]
-    edges: list[EdgePayload]
     active_node_id: str
     breadcrumbs: list[str]
     summary_ready: bool = False
@@ -105,4 +110,6 @@ class SummaryResponse(BaseModel):
 class DetailResponse(BaseModel):
     node: NodePayload
     fit_with_path: str
+    campus_relevance: str
+    quick_actions: list[str]
     unlocks_next: list[str]
