@@ -125,6 +125,58 @@ export function PathwayCanvas({
         transition={dragging ? { duration: 0 } : { type: "spring", stiffness: 180, damping: 24 }}
         style={{ transformOrigin: "center center" }}
       >
+        <svg className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="rgba(255,255,255,0.24)" />
+            </marker>
+          </defs>
+          <AnimatePresence>
+            {visibleNodes.map((node) => {
+              if (!node.parent_id) return null;
+              const parent = path.nodes.find((n) => n.id === node.parent_id);
+              if (!parent) return null;
+
+              const dx = node.x - parent.x;
+              const dy = node.y - parent.y;
+              const angle = Math.atan2(dy, dx);
+              const distance = Math.sqrt(dx * dx + dy * dy);
+
+              const parentActive = parent.id === path.active_node_id;
+              const parentChildOption = parent.parent_id === path.active_node_id && !parent.visited;
+              const parentRadius = parentActive ? 108 : parentChildOption ? 64 : 58;
+
+              const nodeActive = node.id === path.active_node_id;
+              const nodeChildOption = node.parent_id === path.active_node_id && !node.visited;
+              const nodeRadius = nodeActive ? 108 : nodeChildOption ? 64 : 58;
+
+              if (distance < parentRadius + nodeRadius) return null;
+
+              const startX = parent.x + WORLD_HALF + Math.cos(angle) * parentRadius;
+              const startY = parent.y + WORLD_HALF + Math.sin(angle) * parentRadius;
+              const endX = node.x + WORLD_HALF - Math.cos(angle) * (nodeRadius + 2);
+              const endY = node.y + WORLD_HALF - Math.sin(angle) * (nodeRadius + 2);
+
+              return (
+                <motion.line
+                  key={`edge-${parent.id}-${node.id}`}
+                  initial={{ opacity: 0, pathLength: 0 }}
+                  animate={{ opacity: 1, pathLength: 1 }}
+                  exit={{ opacity: 0 }}
+                  x1={startX}
+                  y1={startY}
+                  x2={endX}
+                  y2={endY}
+                  stroke="rgba(255,255,255,0.18)"
+                  strokeWidth="2"
+                  strokeDasharray="4 4"
+                  markerEnd="url(#arrowhead)"
+                />
+              );
+            })}
+          </AnimatePresence>
+        </svg>
+
         <AnimatePresence>
           {visibleNodes.map((node, index) => {
             const active = node.id === activeNode.id;
