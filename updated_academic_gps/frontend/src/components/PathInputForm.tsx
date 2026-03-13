@@ -1,4 +1,5 @@
 import { FormEvent, useState } from "react";
+import { BrandMark } from "./BrandMark";
 import { demoProfile } from "../data/demoProfile";
 import { UserProfile } from "../types";
 
@@ -48,15 +49,11 @@ export function PathInputForm({ onStart, loading }: Props) {
       <form onSubmit={handleSubmit} className="glass w-full max-w-5xl rounded-[28px] p-6 shadow-glow">
         <div className="mb-6 flex items-end justify-between gap-4">
           <div className="flex items-start gap-6">
-            <img 
-              src="/648223734_1219376380348981_176398887528869947_n.png" 
-              alt="Ficus Logo" 
-              className="h-24 w-auto rounded-xl object-contain"
-            />
+            <BrandMark />
             <div>
-              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-ficus-coral">Academic Discovery at UofT</p>
-              <h1 className="text-3xl font-semibold tracking-tight text-ficus-cream">Build your Ficus pathway one opportunity bubble at a time.</h1>
-              <p className="mt-3 max-w-3xl text-sm leading-6 text-ficus-cream/80">
+              <p className="mb-2 text-xs uppercase tracking-[0.28em] text-[#d8b38e]">UofT opportunity mapping</p>
+              <h1 className="text-3xl font-semibold tracking-tight text-[#f7ead8]">Build your pathway one opportunity bubble at a time.</h1>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-[#ecdcca]">
                 Start with your campus context, interests, and goals. We&apos;ll turn them into a compact branching map of UofT-relevant labs,
                 courses, student communities, work-study leads, and startup pathways.
               </p>
@@ -65,9 +62,9 @@ export function PathInputForm({ onStart, loading }: Props) {
           <button
             type="button"
             onClick={loadDemo}
-            className="rounded-full border border-ficus-cream/12 bg-ficus-cream/[0.08] px-4 py-2 text-sm text-ficus-cream transition hover:bg-ficus-cream/[0.12]"
+            className="rounded-full border border-[#e8d7c2]/28 bg-[rgba(248,235,219,0.12)] px-4 py-2 text-sm text-[#f7ead8] transition hover:bg-[rgba(248,235,219,0.2)]"
           >
-            Load Ficus demo
+            Load UofT demo
           </button>
         </div>
 
@@ -90,15 +87,15 @@ export function PathInputForm({ onStart, loading }: Props) {
         </div>
 
         <div className="mt-6 flex items-center justify-between">
-          <p className="text-xs text-ficus-cream/60">
+          <p className="text-xs text-[#dcc7b2]">
             Personalized around UofT opportunities with safe public-data ingestion and local demo fallback.
           </p>
           <button
             type="submit"
             disabled={loading}
-            className="rounded-full bg-gradient-to-r from-ficus-coral via-ficus-lilac to-ficus-plum px-5 py-2.5 text-sm font-medium text-ficus-cream transition hover:scale-[1.01] disabled:opacity-60 shadow-lg"
+            className="rounded-full bg-gradient-to-r from-[#d7a07e] via-[#c7acd1] to-[#a88272] px-5 py-2.5 text-sm font-medium text-white transition hover:scale-[1.01] disabled:opacity-60 shadow-lg"
           >
-            {loading ? "Opening map..." : "Enter Ficus pathway map"}
+            {loading ? "Opening map..." : "Enter the map"}
           </button>
         </div>
       </form>
@@ -119,12 +116,12 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-ficus-cream/60">{label}</span>
+      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-[#dcc7b2]">{label}</span>
       <input
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
-        className="w-full rounded-2xl border border-ficus-cream/12 bg-ficus-plum/40 px-4 py-3 text-sm text-ficus-cream outline-none transition placeholder:text-ficus-cream/40 focus:border-ficus-coral/60 focus:bg-ficus-plum/60"
+        className="w-full rounded-2xl border border-[#e8d7c2]/24 bg-[rgba(248,235,219,0.12)] px-4 py-3 text-sm text-[#f7ead8] outline-none transition placeholder:text-[#c9b39d] focus:border-[#d7a07e] focus:bg-[rgba(248,235,219,0.18)]"
       />
     </label>
   );
@@ -143,14 +140,14 @@ function SelectField({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-ficus-cream/60">{label}</span>
+      <span className="mb-2 block text-xs uppercase tracking-[0.22em] text-[#dcc7b2]">{label}</span>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-2xl border border-ficus-cream/12 bg-ficus-plum/40 px-4 py-3 text-sm text-ficus-cream outline-none transition focus:border-ficus-coral/60 focus:bg-ficus-plum/60"
+        className="w-full rounded-2xl border border-[#e8d7c2]/24 bg-[rgba(248,235,219,0.12)] px-4 py-3 text-sm text-[#f7ead8] outline-none transition focus:border-[#d7a07e] focus:bg-[rgba(248,235,219,0.18)]"
       >
         {options.map((option) => (
-          <option key={option} value={option} className="bg-ficus-plum">
+          <option key={option} value={option} className="bg-[#4b2c42] text-[#f7ead8]">
             {option}
           </option>
         ))}
